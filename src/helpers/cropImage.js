@@ -94,15 +94,6 @@ const getCroppedImg = async (
   //     resolve({ file, url: URL.createObjectURL(file) });
   //   }, "image/jpeg");
   // });
-
-  // // As Base64 string
-  // return new Promise((resolve) => {
-  //   canvas.toBlob((file) => {
-  //     const url = URL.createObjectURL(file);
-  //     resolve({ file, url }); // Keep this line if you need the File object elsewhere
-  //     resolve(url); // Resolve with the Base64 string directly
-  //   }, "image/jpeg");
-  // });
 };
 
 export default getCroppedImg;

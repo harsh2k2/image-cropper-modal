@@ -34,10 +34,10 @@ const ImageCrop = () => {
   const handleFileChange = async ({ target: { files } }) => {
     const file = files && files[0];
 
-    if (file && file.size > 1024 * 1024) {
+    if (file && file.size > 4096 * 1024) {
       // alert("Please select an image of size less than 1MB");
 
-      toast.error("Please select an image of size less than 1MB");
+      toast.error("Please select an image of size less than 4 MegaByte");
       return;
     }
 
@@ -52,6 +52,7 @@ const ImageCrop = () => {
         toast.error("The image dimensions must be at least 100px × 100px");
         return;
       }
+
       setImage(imageDataUrl);
       setOpenModal(true);
     };
