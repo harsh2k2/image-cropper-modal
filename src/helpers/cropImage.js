@@ -1,17 +1,17 @@
-export const readFile = file => {
-  return new Promise(resolve => {
+export const readFile = (file) => {
+  return new Promise((resolve) => {
     const reader = new FileReader();
-    reader.addEventListener('load', () => resolve(reader.result), false);
+    reader.addEventListener("load", () => resolve(reader.result), false);
     reader.readAsDataURL(file);
   });
 };
 
-export const createImage = url =>
+export const createImage = (url) =>
   new Promise((resolve, reject) => {
     const image = new Image();
-    image.addEventListener('load', () => resolve(image));
-    image.addEventListener('error', error => reject(error));
-    image.setAttribute('crossOrigin', 'anonymous'); // needed to avoid cross-origin issues on CodeSandbox
+    image.addEventListener("load", () => resolve(image));
+    image.addEventListener("error", (error) => reject(error));
+    image.setAttribute("crossOrigin", "anonymous"); // needed to avoid cross-origin issues on CodeSandbox
     image.src = url;
   });
 
@@ -26,8 +26,10 @@ export function rotateSize(width, height, rotation) {
   const rotRad = getRadianAngle(rotation);
 
   return {
-    width: Math.abs(Math.cos(rotRad) * width) + Math.abs(Math.sin(rotRad) * height),
-    height: Math.abs(Math.sin(rotRad) * width) + Math.abs(Math.cos(rotRad) * height)
+    width:
+      Math.abs(Math.cos(rotRad) * width) + Math.abs(Math.sin(rotRad) * height),
+    height:
+      Math.abs(Math.sin(rotRad) * width) + Math.abs(Math.cos(rotRad) * height),
   };
 }
 
@@ -38,8 +40,8 @@ const getCroppedImg = async (
   flip = { horizontal: false, vertical: false }
 ) => {
   const image = await createImage(imageSrc);
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
 
   if (!ctx) {
     return null;
@@ -48,7 +50,11 @@ const getCroppedImg = async (
   const rotRad = getRadianAngle(rotation);
 
   // calculate bounding box of the rotated image
-  const { width: bBoxWidth, height: bBoxHeight } = rotateSize(image.width, image.height, rotation);
+  const { width: bBoxWidth, height: bBoxHeight } = rotateSize(
+    image.width,
+    image.height,
+    rotation
+  );
 
   // set canvas size to match the bounding box
   canvas.width = bBoxWidth;
@@ -65,7 +71,12 @@ const getCroppedImg = async (
 
   // croppedAreaPixels values are bounding box relative
   // extract the cropped image using these values
-  const data = ctx.getImageData(pixelCrop.x, pixelCrop.y, pixelCrop.width, pixelCrop.height);
+  const data = ctx.getImageData(
+    pixelCrop.x,
+    pixelCrop.y,
+    pixelCrop.width,
+    pixelCrop.height
+  );
 
   // set canvas width to final desired crop size - this will clear existing context
   canvas.width = pixelCrop.width;
@@ -75,14 +86,23 @@ const getCroppedImg = async (
   ctx.putImageData(data, 0, 0);
 
   // As Base64 string
-  // return canvas.toDataURL('image/jpeg');
+  return canvas.toDataURL("image/jpeg");
 
   // As a blob
-  return new Promise(resolve => {
-    canvas.toBlob(file => {
-      resolve({ file, url: URL.createObjectURL(file) });
-    }, 'image/jpeg');
-  });
+  // return new Promise((resolve) => {
+  //   canvas.toBlob((file) => {
+  //     resolve({ file, url: URL.createObjectURL(file) });
+  //   }, "image/jpeg");
+  // });
+
+  // // As Base64 string
+  // return new Promise((resolve) => {
+  //   canvas.toBlob((file) => {
+  //     const url = URL.createObjectURL(file);
+  //     resolve({ file, url }); // Keep this line if you need the File object elsewhere
+  //     resolve(url); // Resolve with the Base64 string directly
+  //   }, "image/jpeg");
+  // });
 };
 
 export default getCroppedImg;

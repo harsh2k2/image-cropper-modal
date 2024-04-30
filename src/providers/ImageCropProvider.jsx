@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useCallback, useContext, useState } from 'react';
-import getCroppedImg from '@/helpers/cropImage';
+import { createContext, useCallback, useContext, useState } from "react";
+import getCroppedImg from "@/helpers/cropImage";
 
 export const ImageCropContext = createContext({});
 
@@ -17,13 +17,15 @@ const ImageCropProvider = ({
   zoom_step = 0.1,
   max_rotation = 360,
   min_rotation = 0,
-  rotation_step = 5
+  rotation_step = 5,
 }) => {
   const [image, setImage] = useState(defaultImage);
   const [crop, setCrop] = useState(defaultCrop);
   const [rotation, setRotation] = useState(defaultRotation);
   const [zoom, setZoom] = useState(defaultZoom);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState(defaultCroppedAreaPixels);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(
+    defaultCroppedAreaPixels
+  );
 
   const onCropComplete = useCallback((_croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
@@ -49,13 +51,28 @@ const ImageCropProvider = ({
     setRotation(rotation - rotation_step);
   };
 
+  // const getProcessedImage = async () => {
+  //   if (image && croppedAreaPixels) {
+  //     const croppedImage = await getCroppedImg(
+  //       image,
+  //       croppedAreaPixels,
+  //       rotation
+  //     );
+  //     // const imageFile = new File([croppedImage.file], `img-${Date.now()}.png`, {
+  //     //   type: 'image/png'
+  //     // });
+  //     // return imageFile;
+  //     return croppedImage.url;
+  //   }
+  // };
   const getProcessedImage = async () => {
     if (image && croppedAreaPixels) {
-      const croppedImage = await getCroppedImg(image, croppedAreaPixels, rotation);
-      const imageFile = new File([croppedImage.file], `img-${Date.now()}.png`, {
-        type: 'image/png'
-      });
-      return imageFile;
+      const croppedImageUrl = await getCroppedImg(
+        image,
+        croppedAreaPixels,
+        rotation
+      );
+      return croppedImageUrl; // This is now a Base64 string
     }
   };
 
@@ -92,7 +109,7 @@ const ImageCropProvider = ({
         max_rotation,
         min_rotation,
         rotation_step,
-        resetStates
+        resetStates,
       }}
     >
       {children}

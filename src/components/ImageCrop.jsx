@@ -12,11 +12,23 @@ const ImageCrop = () => {
 
   const { getProcessedImage, setImage, resetStates } = useImageCropContext();
 
+  // const handleDone = async () => {
+  //   const avatar = await getProcessedImage();
+  //   setPreview(window.URL.createObjectURL(avatar));
+  //   resetStates();
+  //   setOpenModal(false);
+  // };
+
   const handleDone = async () => {
-    const avatar = await getProcessedImage();
-    setPreview(window.URL.createObjectURL(avatar));
-    resetStates();
-    setOpenModal(false);
+    const avatarUrl = await getProcessedImage();
+    if (avatarUrl) {
+      setPreview(avatarUrl);
+      resetStates();
+      setOpenModal(false);
+    } else {
+      // Handle error, e.g., by showing a toast message
+      toast.error("Failed to process the image");
+    }
   };
 
   const handleFileChange = async ({ target: { files } }) => {
@@ -29,9 +41,24 @@ const ImageCrop = () => {
       return;
     }
 
+    // const imageDataUrl = await readFile(file);
+    // setImage(imageDataUrl);
+    // setOpenModal(true);
+
     const imageDataUrl = await readFile(file);
-    setImage(imageDataUrl);
-    setOpenModal(true);
+    const image = new Image();
+    image.onload = () => {
+      if (image.width < 100 || image.height < 100) {
+        toast.error("The image dimensions must be at least 100px × 100px");
+        return;
+      }
+      setImage(imageDataUrl);
+      setOpenModal(true);
+    };
+    image.onerror = () => {
+      toast.error("Failed to load the image");
+    };
+    image.src = imageDataUrl;
   };
 
   return (
