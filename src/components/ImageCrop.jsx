@@ -1,9 +1,9 @@
 import { useState } from "react";
-import user1 from "@/assets/user_1.png";
-import Modal from "@/components/base/Modal";
-import { readFile } from "@/helpers/cropImage";
+import user1 from "../assets/user_1.png";
+import Modal from "./base/Modal";
+import { readFile } from "../helpers/cropImage";
 import ImageCropModalContent from "./ImageCropModalContent";
-import { useImageCropContext } from "@/providers/ImageCropProvider";
+import { useImageCropContext } from "../providers/ImageCropProvider";
 import toast, { Toaster } from "react-hot-toast";
 
 const ImageCrop = () => {

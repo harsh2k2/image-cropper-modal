@@ -1,8 +1,8 @@
-import { readFile } from '@/helpers/cropImage';
-import { useImageCropContext } from '@/providers/ImageCropProvider';
-import Button from '@/components/base/Button';
-import Cropper from '@/components/cropper/Cropper';
-import { RotationSlider, ZoomSlider } from '@/components/cropper/Sliders';
+import { readFile } from "../helpers/cropImage";
+import { useImageCropContext } from "../providers/ImageCropProvider";
+import Button from "../components/base/Button";
+import Cropper from "../components/cropper/Cropper";
+import { RotationSlider, ZoomSlider } from "../components/cropper/Sliders";
 
 const ImageCropModalContent = ({ handleDone, handleClose }) => {
   const { setImage } = useImageCropContext();

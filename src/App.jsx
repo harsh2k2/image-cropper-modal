@@ -1,5 +1,5 @@
-import ImageCrop from '@/components/ImageCrop';
-import ImageCropProvider from '@/providers/ImageCropProvider';
+import ImageCrop from "./components/ImageCrop";
+import ImageCropProvider from "./providers/ImageCropProvider";
 
 const App = () => {
   return (

@@ -1,18 +1,30 @@
-import { useImageCropContext } from '@/providers/ImageCropProvider';
+import { useImageCropContext } from "../../providers/ImageCropProvider";
 import {
   ArrowUturnLeftIcon,
   ArrowUturnRightIcon,
   MinusIcon,
-  PlusIcon
-} from '@heroicons/react/24/solid';
-import classNames from 'classnames';
+  PlusIcon,
+} from "@heroicons/react/24/solid";
+import classNames from "classnames";
 
 export const ZoomSlider = ({ className }) => {
-  const { zoom, setZoom, handleZoomIn, handleZoomOut, max_zoom, min_zoom, zoom_step } =
-    useImageCropContext();
+  const {
+    zoom,
+    setZoom,
+    handleZoomIn,
+    handleZoomOut,
+    max_zoom,
+    min_zoom,
+    zoom_step,
+  } = useImageCropContext();
 
   return (
-    <div className={classNames(className, 'flex items-center justify-center gap-2')}>
+    <div
+      className={classNames(
+        className,
+        "flex items-center justify-center gap-2"
+      )}
+    >
       <button className="p-1" onClick={handleZoomOut}>
         <MinusIcon className="text-gray-400 w-4" />
       </button>
@@ -23,7 +35,7 @@ export const ZoomSlider = ({ className }) => {
         max={max_zoom}
         step={zoom_step}
         value={zoom}
-        onChange={e => {
+        onChange={(e) => {
           setZoom(Number(e.target.value));
         }}
       />
@@ -42,11 +54,16 @@ export const RotationSlider = ({ className }) => {
     min_rotation,
     rotation_step,
     handleRotateAntiCw,
-    handleRotateCw
+    handleRotateCw,
   } = useImageCropContext();
 
   return (
-    <div className={classNames(className, 'flex items-center justify-center gap-2')}>
+    <div
+      className={classNames(
+        className,
+        "flex items-center justify-center gap-2"
+      )}
+    >
       <button className="p-1" onClick={handleRotateAntiCw}>
         <ArrowUturnLeftIcon className="text-gray-400 w-4" />
       </button>
@@ -57,7 +74,7 @@ export const RotationSlider = ({ className }) => {
         max={max_rotation}
         step={rotation_step}
         value={rotation}
-        onChange={e => {
+        onChange={(e) => {
           setRotation(Number(e.target.value));
         }}
       />
