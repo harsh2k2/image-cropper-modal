@@ -1,23 +1,16 @@
 import { useState } from "react";
 import user1 from "../assets/user_1.png";
-import Modal from "./base/Modal";
 import { readFile } from "../helpers/cropImage";
 import ImageCropModalContent from "./ImageCropModalContent";
 import { useImageCropContext } from "../providers/ImageCropProvider";
 import toast, { Toaster } from "react-hot-toast";
+import classNames from "classnames"; // Import classNames for conditional class application
 
 const ImageCrop = () => {
   const [openModal, setOpenModal] = useState(false);
   const [preview, setPreview] = useState(user1);
 
   const { getProcessedImage, setImage, resetStates } = useImageCropContext();
-
-  // const handleDone = async () => {
-  //   const avatar = await getProcessedImage();
-  //   setPreview(window.URL.createObjectURL(avatar));
-  //   resetStates();
-  //   setOpenModal(false);
-  // };
 
   const handleDone = async () => {
     const avatarUrl = await getProcessedImage();
@@ -26,7 +19,6 @@ const ImageCrop = () => {
       resetStates();
       setOpenModal(false);
     } else {
-      // Handle error, e.g., by showing a toast message
       toast.error("Failed to process the image");
     }
   };
@@ -35,15 +27,9 @@ const ImageCrop = () => {
     const file = files && files[0];
 
     if (file && file.size > 4096 * 1024) {
-      // alert("Please select an image of size less than 1MB");
-
       toast.error("Please select an image of size less than 4 MegaByte");
       return;
     }
-
-    // const imageDataUrl = await readFile(file);
-    // setImage(imageDataUrl);
-    // setOpenModal(true);
 
     const imageDataUrl = await readFile(file);
     const image = new Image();
@@ -69,7 +55,6 @@ const ImageCrop = () => {
         <input
           type="file"
           onChange={handleFileChange}
-          className="hidden"
           id="avatarInput"
           accept="image/*"
         />
@@ -83,12 +68,38 @@ const ImageCrop = () => {
           />
         </label>
 
-        <Modal open={openModal} handleClose={() => setOpenModal(false)}>
-          <ImageCropModalContent
-            handleDone={handleDone}
-            handleClose={() => setOpenModal(false)}
-          />
-        </Modal>
+        {/* Integrated Modal */}
+        <div
+          className={classNames(
+            "fixed z-10 overflow-y-auto top-0 w-full left-0",
+            {
+              hidden: !openModal,
+            }
+          )}
+          id="modal"
+        >
+          <div className="flex items-center justify-center min-height-100vh pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div className="fixed inset-0 transition-opacity">
+              <div className="absolute inset-0 bg-gray-900 opacity-75"></div>
+              <span className="hidden sm:inline-block sm:align-middle sm:h-screen">
+                ​
+              </span>
+              <div
+                className="inline-block align-center bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="modal-headline"
+              >
+                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                  <ImageCropModalContent
+                    handleDone={handleDone}
+                    handleClose={() => setOpenModal(false)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

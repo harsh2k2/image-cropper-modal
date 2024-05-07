@@ -1,6 +1,5 @@
 import { readFile } from "../helpers/cropImage";
 import { useImageCropContext } from "../providers/ImageCropProvider";
-import Button from "../components/base/Button";
 import Cropper from "../components/cropper/Cropper";
 import { RotationSlider, ZoomSlider } from "../components/cropper/Sliders";
 
@@ -33,16 +32,27 @@ const ImageCropModalContent = ({ handleDone, handleClose }) => {
           accept="image/*"
         />
 
-        <Button variant="light" className="shadow w-full mb-4 hover:shadow-lg">
+        <button
+          type="button"
+          className="shadow w-full mb-4 hover:shadow-lg bg-white text-gray-900 hover:bg-white hover:text-blue-500 px-4 py-2 text-sm rounded-3xl"
+        >
           <label htmlFor="avatarInput">Upload Another Picture</label>
-        </Button>
+        </button>
         <div className="flex gap-2">
-          <Button variant="secondary" onClick={handleClose}>
+          <button
+            type="button"
+            className="bg-red-500 text-white hover:bg-red-700 hover:text-white px-4 py-2 text-sm rounded-3xl"
+            onClick={handleClose}
+          >
             Cancel
-          </Button>
-          <Button variant="primary" className="w-full" onClick={handleDone}>
+          </button>
+          <button
+            type="button"
+            className="w-full bg-blue-500 text-white hover:bg-blue-700 hover:text-white px-4 py-2 text-sm rounded-3xl"
+            onClick={handleDone}
+          >
             Done & Save
-          </Button>
+          </button>
         </div>
       </div>
     </div>
